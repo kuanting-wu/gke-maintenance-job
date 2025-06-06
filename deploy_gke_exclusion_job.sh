@@ -12,10 +12,10 @@ GKE_CLUSTER_REGION="asia-southeast1" # Region where your GKE cluster is located
 
 # Cloud Run Job specific configurations
 CLOUD_RUN_JOB_REGION="asia-southeast1" # Region where the Cloud Run Job will be deployed (can be same as GKE)
-ARTIFACT_REGISTRY_REPO_NAME="gke-maintenance-repo"
+ARTIFACT_REGISTRY_REPO_NAME="eup"
 IMAGE_NAME="gke-maintenance-updater"
 IMAGE_TAG="latest"
-SERVICE_ACCOUNT_NAME="gke-maintenance-job-sa"
+SERVICE_ACCOUNT_NAME="jenkins"
 SCHEDULER_JOB_NAME="gke-maintenance-exclusion-scheduler"
 SCHEDULER_SCHEDULE="0 0 1 * *" # Example: Run at 00:00 on the 1st of every month
 
@@ -54,14 +54,6 @@ gcloud services enable artifactregistry.googleapis.com --project="${PROJECT_ID}"
 echo "Configuring Docker for Artifact Registry in ${CLOUD_RUN_JOB_REGION}..."
 gcloud auth configure-docker "${CLOUD_RUN_JOB_REGION}-docker.pkg.dev"
 
-# --- 4. Create Artifact Registry Repository (if it doesn't exist) ---
-echo "Creating Artifact Registry repository '${ARTIFACT_REGISTRY_REPO_NAME}' if it doesn't exist..."
-gcloud artifacts repositories create "${ARTIFACT_REGISTRY_REPO_NAME}" \
-    --repository-format=docker \
-    --location="${CLOUD_RUN_JOB_REGION}" \
-    --description="Docker repository for GKE maintenance updater images" \
-    --project="${PROJECT_ID}" || echo "Repository already exists or creation failed, proceeding..."
-
 # --- 5. Build the Docker Image ---
 echo "Building Docker image: ${FULL_IMAGE_PATH}..."
 docker build -t "${FULL_IMAGE_PATH}" .
@@ -69,19 +61,6 @@ docker build -t "${FULL_IMAGE_PATH}" .
 # --- 6. Push the Docker Image ---
 echo "Pushing Docker image to Artifact Registry..."
 docker push "${FULL_IMAGE_PATH}"
-
-# --- 7. Create Service Account for the Cloud Run Job ---
-echo "Creating service account '${SERVICE_ACCOUNT_NAME}' if it doesn't exist..."
-gcloud iam service-accounts create "${SERVICE_ACCOUNT_NAME}" \
-    --display-name "Service Account for GKE Maintenance Job" \
-    --project "${PROJECT_ID}" || echo "Service account already exists, proceeding..."
-
-# --- 8. Grant Permissions to the Service Account ---
-echo "Granting 'Kubernetes Engine Admin' role to ${SERVICE_ACCOUNT_EMAIL} on project ${PROJECT_ID}..."
-# This role has broad GKE permissions. Consider a more granular custom role for production.
-gcloud projects add-iam-policy-binding "${PROJECT_ID}" \
-    --member="serviceAccount:${SERVICE_ACCOUNT_EMAIL}" \
-    --role="roles/container.admin" || echo "Role already granted, proceeding..."
 
 # --- 9. Deploy the Cloud Run Job ---
 echo "Deploying Cloud Run Job 'gke-maintenance-exclusion-job' from cloud_run_job_config.yaml..."

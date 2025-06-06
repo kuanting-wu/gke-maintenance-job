@@ -13,10 +13,10 @@ RUN apt-get update && apt-get install -y \
 
 # Copy your script into the container.
 WORKDIR /app
-COPY testrun.sh .
+COPY run.sh .
 
 # Make the script executable.
-RUN chmod +x testrun.sh
+RUN chmod +x run.sh
 
 # Set the entrypoint to your script. This means when the container runs, it will execute run.sh.
-ENTRYPOINT ["/app/testrun.sh"]
+ENTRYPOINT ["/app/run.sh"]

@@ -49,6 +49,7 @@ echo "      --add-maintenance-exclusion-scope=\"${EXCLUSION_SCOPE}\""
 
 # Simulate a successful exit code for the gcloud command
 exit 0
+
 # --- Final Status Check ---
 # Check the exit status of the previous command ($? is the exit code of the last command).
 if [ $? -eq 0 ]; then

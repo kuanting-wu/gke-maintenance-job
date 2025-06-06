@@ -16,7 +16,7 @@ WORKDIR /app
 COPY testrun.sh .
 
 # Make the script executable.
-RUN chmod +x run.sh
+RUN chmod +x testrun.sh
 
 # Set the entrypoint to your script. This means when the container runs, it will execute run.sh.
-ENTRYPOINT ["/app/run.sh"]
+ENTRYPOINT ["/app/testrun.sh"]

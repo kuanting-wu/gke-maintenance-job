@@ -1,0 +1,25 @@
+apiVersion: run.googleapis.com/v1
+kind: Job
+metadata:
+  name: gke-maintenance-exclusion-job
+  labels:
+    cloud.googleapis.com/location: us-central1 # Or your desired region for the Cloud Run Job
+spec:
+  template:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: gke-updater
+              image: gcr.io/${PROJECT_ID}/gke-maintenance-updater:latest # Replace with your project ID and desired image tag
+              env:
+                - name: GKE_CLUSTER_NAME
+                  value: "your-gke-cluster-name" # REQUIRED: Replace with your GKE cluster name
+                - name: GKE_CLUSTER_REGION
+                  value: "your-gke-cluster-region" # REQUIRED: Replace with your GKE cluster region (e.g., us-central1)
+                - name: PROJECT_ID
+                  value: "your-gcp-project-id" # REQUIRED: Replace with your GCP Project ID
+                - name: EXCLUSION_NAME
+                  value: "cloud-run-scheduled-exclusion" # REQUIRED: A descriptive name for the exclusion
+          serviceAccountName: gke-maintenance-job-sa@your-gcp-project-id.iam.gserviceaccount.com # REQUIRED: Replace with your service account email
+          restartPolicy: Never # Job should not restart on failure, let Cloud Run handle retries

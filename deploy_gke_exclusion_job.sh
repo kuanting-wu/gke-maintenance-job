@@ -68,14 +68,6 @@ gcloud run jobs replace cloud_run_job_config.yaml \
     --region="${CLOUD_RUN_JOB_REGION}" \
     --project="${PROJECT_ID}"
 
-# --- 10. Grant Cloud Run Invoker Role to Service Account (for Cloud Scheduler) ---
-echo "Granting 'Cloud Run Invoker' role to ${SERVICE_ACCOUNT_EMAIL} on the Cloud Run Job..."
-gcloud run jobs add-iam-policy-binding "gke-maintenance-exclusion-job" \
-    --member="serviceAccount:${SERVICE_ACCOUNT_EMAIL}" \
-    --role="roles/run.jobInvoker" \
-    --region="${CLOUD_RUN_JOB_REGION}" \
-    --project="${PROJECT_ID}" || echo "Cloud Run Invoker role already granted, proceeding..."
-
 # --- 11. Create Cloud Scheduler Job ---
 echo "Creating Cloud Scheduler job '${SCHEDULER_JOB_NAME}' to trigger the Cloud Run Job monthly..."
 gcloud scheduler jobs create http "${SCHEDULER_JOB_NAME}" \

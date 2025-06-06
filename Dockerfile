@@ -19,4 +19,4 @@ COPY run.sh .
 RUN chmod +x run.sh
 
 # Set the entrypoint to your script. This means when the container runs, it will execute run.sh.
-ENTRYPOINT ["/app/run.sh"]
+ENTRYPOINT ["/app/run.sh"] 

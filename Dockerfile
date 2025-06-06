@@ -13,7 +13,7 @@ RUN apt-get update && apt-get install -y \
 
 # Copy your script into the container.
 WORKDIR /app
-COPY run.sh .
+COPY testrun.sh .
 
 # Make the script executable.
 RUN chmod +x run.sh

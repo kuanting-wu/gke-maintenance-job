@@ -6,14 +6,14 @@ set -x
 
 # --- Configuration Variables ---
 PROJECT_ID="euprdstage1"
-GKE_CLUSTER_REGION="asia-southeast1" # Region where your GKE cluster is located
+# GKE_CLUSTER_REGION="asia-southeast1" # Region where your GKE cluster is located
 # GKE_CLUSTER_NAME will be read from cloud_run_job_config.yaml
 # EXCLUSION_NAME will be read from cloud_run_job_config.yaml
 
 # Cloud Run Job specific configurations
-CLOUD_RUN_JOB_REGION="asia-southeast1" # Region where the Cloud Run Job will be deployed (can be same as GKE)
+CLOUD_RUN_JOB_REGION="asia" # Region where the Cloud Run Job will be deployed (can be same as GKE)
 ARTIFACT_REGISTRY_REPO_NAME="eup"
-IMAGE_NAME="gke-maintenance-updater"
+IMAGE_NAME="eup-gke-maintenance-updater"
 IMAGE_TAG="latest"
 SERVICE_ACCOUNT_NAME="jenkins"
 SCHEDULER_JOB_NAME="gke-maintenance-exclusion-scheduler"
@@ -24,7 +24,6 @@ FULL_IMAGE_PATH="${CLOUD_RUN_JOB_REGION}-docker.pkg.dev/${PROJECT_ID}/${ARTIFACT
 
 echo "--- Starting GKE Maintenance Exclusion Setup Script ---"
 echo "Project ID: ${PROJECT_ID}"
-echo "GKE Cluster Region: ${GKE_CLUSTER_REGION}"
 echo "Cloud Run Job Region: ${CLOUD_RUN_JOB_REGION}"
 echo "Image Path: ${FULL_IMAGE_PATH}"
 echo "Service Account: ${SERVICE_ACCOUNT_EMAIL}"

@@ -1,7 +1,7 @@
 apiVersion: run.googleapis.com/v1
 kind: Job
 metadata:
-  name: gke-maintenance-exclusion-id-stage2-standard-cluster
+  name: gke-maintenance-exclusion-id-private-standard-cluster
   labels:
     cloud.googleapis.com/location: asia-southeast1
 spec:

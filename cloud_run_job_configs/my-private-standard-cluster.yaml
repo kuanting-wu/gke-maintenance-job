@@ -16,7 +16,7 @@ spec:
                 - name: GKE_CLUSTER_NAME
                   value: "th-private-standard-cluster"
                 - name: GKE_CLUSTER_REGION
-                  value: "asia-east1"
+                  value: "asia-southeast1"
                 - name: PROJECT_ID
                   value: "eupfin-internal01"
                 - name: EXCLUSION_NAME

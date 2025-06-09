@@ -20,5 +20,5 @@ spec:
                 - name: PROJECT_ID
                   value: "eupfin-internal01"
                 - name: EXCLUSION_NAME
-                  value: "cloud-run-scheduled-exclusion-th-stage2"
+                  value: "cloud-run-scheduled-exclusion-th-private"
           serviceAccountName: jenkins@euprdstage1.iam.gserviceaccount.com

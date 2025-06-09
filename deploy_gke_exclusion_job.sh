@@ -93,19 +93,6 @@ for CONFIG_FILE in $CONFIG_FILES; do
         --project="${PROJECT_ID}" \
         --quiet # Add --quiet to suppress interactive prompts for --allow-unauthenticated as it's a job
 
-    # --- Create Cloud Scheduler Job ---
-    echo "Creating Cloud Scheduler job '${SCHEDULER_JOB_NAME}' to trigger Cloud Run Job '${JOB_NAME}'..."
-    gcloud scheduler jobs create http "${SCHEDULER_JOB_NAME}" \
-        --project "${PROJECT_ID}" \
-        --location "${CLOUD_RUN_JOB_REGION}" \
-        --schedule "${SCHEDULER_SCHEDULE}" \
-        --uri "https://${CLOUD_RUN_JOB_REGION}-run.googleapis.com/apis/run.googleapis.com/v1/namespaces/${PROJECT_ID}/jobs/${JOB_NAME}:run" \
-        --http-method POST \
-        --oauth-service-account-email "${SCHEDULER_SERVICE_ACCOUNT_EMAIL}" \
-        --oauth-token-audience "https://${CLOUD_RUN_JOB_REGION}-run.googleapis.com/apis/run.googleapis.com/v1/namespaces/${PROJECT_ID}/jobs/${JOB_NAME}:run" \
-        --attempt-deadline="30m" \
-        --description="Scheduled trigger for GKE maintenance exclusion for ${JOB_NAME}" || echo "Cloud Scheduler job already exists or creation failed for ${JOB_NAME}, proceeding..."
-
     echo "--- Finished Processing Job: ${JOB_NAME} ---"
 done
 

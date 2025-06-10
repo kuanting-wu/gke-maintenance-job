@@ -1,9 +1,9 @@
 apiVersion: run.googleapis.com/v1
 kind: Job
 metadata:
-  name: gke-maintenance-exclusion-th-private-standard-cluster
+  name: gke-maintenance-exclusion-tw-tms-rms-private-standard-cluster
   labels:
-    cloud.googleapis.com/location: asia-southeast1
+    cloud.googleapis.com/location: asia-east1
 spec:
   template:
     spec:
@@ -14,11 +14,11 @@ spec:
               image: asia-docker.pkg.dev/euprdstage1/eup/eup-gke-maintenance-updater:latest
               env:
                 - name: GKE_CLUSTER_NAME
-                  value: "th-private-standard-cluster"
+                  value: "tw-tms-rms-private-standard-cluster"
                 - name: GKE_CLUSTER_REGION
-                  value: "asia-southeast1"
+                  value: "asia-east1"
                 - name: PROJECT_ID
-                  value: "eupfin-internal01"
+                  value: "eupfin-tms"
                 - name: EXCLUSION_NAME
-                  value: "cloud-run-scheduled-exclusion-th-private"
+                  value: "cloud-run-scheduled-exclusion-tw-tms-rms-private"
           serviceAccountName: jenkins@euprdstage1.iam.gserviceaccount.com
